@@ -106,11 +106,6 @@ if __name__ == "__main__":
 	print("Result size = ", len(tweet_url))
 	
 	tweet_url.head()
-	
-	consumer_key = "7eK5dzFcmuWzCHh1TBs6LR2j3" 
-	consumer_secret = "ZKKyqKr4BbQJUwnZ8TdKitMeM0PMcAHxNJQwA5al0PuD8KicCu" 
-	access_token = "82261012-rATkmbWoehfZ7KCiBnlX17EoqZw7ABwcPSAjgCT15" 
-	access_token_secret = "PK5E8fiOlVICEH4jjSGPTVWFcw1I4v7qAkrmz4Uk3xs0E"
 	auth = tweepy.OAuthHandler(consumer_key, consumer_secret) 
 	auth.set_access_token(access_token, access_token_secret)
 	api = tweepy.API(auth)
