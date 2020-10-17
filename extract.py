@@ -91,7 +91,6 @@ if __name__ == "__main__":
 	print("Result size = ", len(tweet_url))
 	
 	tweet_url.head()
-	
 	auth = tweepy.OAuthHandler(consumer_key, consumer_secret) 
 	auth.set_access_token(access_token, access_token_secret)
 	api = tweepy.API(auth)
