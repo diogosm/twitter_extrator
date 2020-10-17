@@ -15,7 +15,7 @@ from timeit import default_timer as timer
 import time
 
 date_format = '%Y-%m-%d'
-start_date = datetime.datetime.strptime("2020-03-01", date_format).date()
+start_date = datetime.datetime.strptime("2020-04-06", date_format).date()
 end_date = datetime.datetime.strptime("2020-09-01", date_format).date()
 ## twitter settings ##
 consumer_key = "" 
@@ -24,24 +24,8 @@ access_token = ""
 access_token_secret = ""
 ## end twitter settings ##
 lista_keywords = ['cloroquina', 
-	'Fake news',
-	#'Rede social',
-	#'Sites',
-	#'Mídias sociais',
-	#'Notícias falsas',
 	'Hidroxicloroquina',
-	'Covid 19',
-	'Corona vírus',
-	'Desinformação',
-	'Pandemia',
-	'Vacina',
-	'Quarentena',
-	'Azitromicina',
-	#'Economia',
-	#'Renda básica emergencial',
-	'Contágio',
-	'Isolamento social',
-	'Transmissão assintomática'#,
+	'Transmissão assintommatica'#,
 	#'Saúde'
 	]
 
@@ -51,7 +35,7 @@ def contaTempo(start_time):
 
 def processaArq(arq):
 	tweet_url = pd.read_csv(arq, index_col= None, header = None, names = ["links"])
-	print("------------- Num de links coletados = ", len(tweet_url))
+	print("------------- Num de links coletados = ", len(tweet_url), flush=True)
 	
 	## pego o id do tweet
 	af = lambda x: x["links"].split("/")[-1]
@@ -65,17 +49,18 @@ def twitterQuery(start_date, end_date):
 	## usa o snscrape pra buscar os tweets no range de data
 	for elem in lista_keywords:
 		query = "snscrape twitter-search \"'{}' since:{} until:{} lang:pt-br exclude:retweets\" > out-{}_{}_{}.txt".format(
-				elem, str(start_date), str(end_date), elem, str(start_date), str(end_date)
+				elem, str(start_date), str(end_date), elem.replace(' ', '_'), str(start_date), str(end_date)
 			)
 			
 		start_time = timer()
-		print('------------- Executando query snscrape...')
-		#os.system(query)
+		print(f'------------- Executando query snscrape ({query})...')
+		os.system(query)
 		contaTempo(start_time)
 		
-		processaArq("out_{}_{}.txt".format(
-			str(start_date), str(end_date)
+		processaArq("out-{}_{}_{}.txt".format(
+			elem.replace(' ', '_'), str(start_date), str(end_date)
 		))
+		time.sleep(60) ## dorme 60s
 
 	
 ## realiza busca a cada 5 dias
@@ -107,10 +92,6 @@ if __name__ == "__main__":
 	
 	tweet_url.head()
 	
-	consumer_key = "7eK5dzFcmuWzCHh1TBs6LR2j3" 
-	consumer_secret = "ZKKyqKr4BbQJUwnZ8TdKitMeM0PMcAHxNJQwA5al0PuD8KicCu" 
-	access_token = "82261012-rATkmbWoehfZ7KCiBnlX17EoqZw7ABwcPSAjgCT15" 
-	access_token_secret = "PK5E8fiOlVICEH4jjSGPTVWFcw1I4v7qAkrmz4Uk3xs0E"
 	auth = tweepy.OAuthHandler(consumer_key, consumer_secret) 
 	auth.set_access_token(access_token, access_token_secret)
 	api = tweepy.API(auth)
